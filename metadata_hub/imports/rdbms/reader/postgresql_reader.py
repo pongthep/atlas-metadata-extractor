@@ -11,7 +11,7 @@ from psycopg2.extras import DictCursor
 class PostgreSQLReader(RDBMSReader):
 
     @staticmethod
-    def get_column_datatype(cursor: DictCursor, table_schema: str, table_name: str):
+    def __get_column_datatype(cursor: DictCursor, table_schema: str, table_name: str):
         sql = "SELECT column_name, ordinal_position, is_nullable, data_type, character_maximum_length " \
               "FROM information_schema.columns " \
               "WHERE table_schema = '{table_schema}' " \
@@ -23,7 +23,7 @@ class PostgreSQLReader(RDBMSReader):
         return column_schema
 
     @staticmethod
-    def get_column_key(cursor: DictCursor, table_schema: str, table_name: str):
+    def __get_column_key(cursor: DictCursor, table_schema: str, table_name: str):
         sql = "SELECT column_name,constraint_type " \
               "FROM information_schema.table_constraints " \
               "JOIN information_schema.key_column_usage " \
@@ -37,7 +37,7 @@ class PostgreSQLReader(RDBMSReader):
         return column_key
 
     @staticmethod
-    def get_column_fk_refer(cursor: DictCursor, table_schema: str, table_name: str):
+    def __get_column_fk_refer(cursor: DictCursor, table_schema: str, table_name: str):
         sql = "SELECT " \
               "tc.table_schema, " \
               "tc.constraint_name, " \
@@ -69,9 +69,9 @@ class PostgreSQLReader(RDBMSReader):
 
         cursor = db_conn.get_conn().cursor()
 
-        column_schema = self.get_column_datatype(cursor, table_schema, table_name)
-        column_key = self.get_column_key(cursor, table_schema, table_name)
-        column_fk_refer = self.get_column_fk_refer(cursor, table_schema, table_name)
+        column_schema = self.__get_column_datatype(cursor, table_schema, table_name)
+        column_key = self.__get_column_key(cursor, table_schema, table_name)
+        column_fk_refer = self.__get_column_fk_refer(cursor, table_schema, table_name)
 
         cursor.close()
 

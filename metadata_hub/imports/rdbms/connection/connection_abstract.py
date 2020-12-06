@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class RDBMSReader(ABC):
+class DBConnection(ABC):
     @abstractmethod
-    def read_table_meta(self):
+    def get_conn(self):
         pass

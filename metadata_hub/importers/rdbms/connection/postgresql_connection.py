@@ -1,4 +1,4 @@
-from metadata_hub.imports.rdbms.connection.connection_abstract import DBConnection
+from metadata_hub.importers.rdbms.connection.connection_abstract import DBConnection
 import psycopg2
 
 

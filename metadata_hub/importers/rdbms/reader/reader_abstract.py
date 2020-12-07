@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from metadata_hub.imports.rdbms.connection.connection_abstract import DBConnection
+from metadata_hub.importers.rdbms.connection.connection_abstract import DBConnection
 
 
 class RDBMSReader(ABC):

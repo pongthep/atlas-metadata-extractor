@@ -3,27 +3,15 @@
 # Refer: https://stackoverflow.com/questions/19552183/how-to-check-if-key-is-primary-psycopg2
 # Refer: https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys
 
-from metadata_hub.importers.rdbms.reader.reader_abstract import RDBMSReader
-from metadata_hub.importers.rdbms.connection.connection_abstract import DBConnection
+from metadata_hub.extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
+from metadata_hub.connection.connection_abstract import RDBMSConnection
 from psycopg2.extras import DictCursor
 
 
-class PostgreSQLReader(RDBMSReader):
+class PostgreSQLExtractor(RDBMSExtractor):
 
     @staticmethod
-    def __get_column_datatype(cursor: DictCursor, table_schema: str, table_name: str):
-        sql = "SELECT column_name, ordinal_position, is_nullable, data_type, character_maximum_length " \
-              "FROM information_schema.columns " \
-              "WHERE table_schema = '{table_schema}' " \
-              "AND table_name = '{table_name}' " \
-              "ORDER BY ordinal_position".format(table_schema=table_schema, table_name=table_name)
-        cursor.execute(sql)
-        column_schema = cursor.fetchall()
-        # TODO pack result into object
-        return column_schema
-
-    @staticmethod
-    def __get_column_key(cursor: DictCursor, table_schema: str, table_name: str):
+    def get_column_key(cursor: DictCursor, table_schema: str, table_name: str):
         sql = "SELECT column_name,constraint_type " \
               "FROM information_schema.table_constraints " \
               "JOIN information_schema.key_column_usage " \
@@ -37,7 +25,7 @@ class PostgreSQLReader(RDBMSReader):
         return column_key
 
     @staticmethod
-    def __get_column_fk_refer(cursor: DictCursor, table_schema: str, table_name: str):
+    def get_column_fk_refer(cursor: DictCursor, table_schema: str, table_name: str):
         sql = "SELECT " \
               "tc.table_schema, " \
               "tc.constraint_name, " \
@@ -62,19 +50,45 @@ class PostgreSQLReader(RDBMSReader):
         # TODO pack result into object
         return column_kf_refer
 
-    def read_table_meta(self, db_conn: DBConnection, table_name: str = ""):
-        table_schema = "public"
-        if table_name.__contains__('.'):
-            table_schema, table_name = table_name.split('.')
+    def extract_table(self, cursor: DictCursor, table_schema: str, table_name: str):
+        pass
 
-        cursor = db_conn.get_conn().cursor()
+    # def extract_table(self, db_conn: RDBMSConnection, table_name: str):
+    #     table_schema = 'public'
+    #     if table_name.__contains__('.'):
+    #         table_schema, table_name = table_name.split('.')
+    #
+    #     cursor = db_conn.get_conn().cursor()
+    #
+    #     column_schema = self.get_column_datatype(cursor, table_schema, table_name)
+    #     column_key = self.get_column_key(cursor, table_schema, table_name)
+    #     column_fk_refer = self.get_column_fk_refer(cursor, table_schema, table_name)
+    #
+    #     cursor.close()
+    #
+    #     print(column_schema)
+    #     print(column_key)
+    #     print(column_fk_refer)
 
-        column_schema = self.__get_column_datatype(cursor, table_schema, table_name)
-        column_key = self.__get_column_key(cursor, table_schema, table_name)
-        column_fk_refer = self.__get_column_fk_refer(cursor, table_schema, table_name)
+    def get_table_list(self, cursor: DictCursor, table_schema: str = 'public'):
+        sql = "SELECT table_name FROM information_schema.tables" \
+              " WHERE table_schema = '{table_schema}'".format(table_schema=table_schema)
 
-        cursor.close()
+        cursor.execute(sql)
+        query_result = cursor.fetchall()
+        table_list = []
+        for table_name in query_result:
+            table_list.append(table_name[0])
 
-        print(column_schema)
-        print(column_key)
-        print(column_fk_refer)
+        return table_list
+
+    def extract_column(self, cursor: DictCursor = None, table_schema: str = 'public', table_name: str = ''):
+        sql = "SELECT column_name, ordinal_position, is_nullable, data_type, character_maximum_length " \
+              "FROM information_schema.columns " \
+              "WHERE table_schema = '{table_schema}' " \
+              "AND table_name = '{table_name}' " \
+              "ORDER BY ordinal_position".format(table_schema=table_schema, table_name=table_name)
+        cursor.execute(sql)
+        column_schema = cursor.fetchall()
+        # TODO pack result into object
+        return column_schema

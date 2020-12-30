@@ -3,8 +3,8 @@
 # Refer: https://stackoverflow.com/questions/19552183/how-to-check-if-key-is-primary-psycopg2
 # Refer: https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys
 
-from metadata_hub.extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
-from metadata_hub.connection.connection_abstract import RDBMSConnection
+from extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
+from connection.connection_abstract import RDBMSConnection
 from psycopg2.extras import DictCursor
 
 

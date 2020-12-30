@@ -1,9 +1,9 @@
-from metadata_hub.connection.connection_abstract import RDBMSConnection
-from metadata_hub.builders.rdbms.postgresql_builder import PostgresqlBuilder
-from metadata_hub.models.server_instance.rdbms_instance import RDBMSInstance
-from metadata_hub.models.rdbms.database_info import Database
-from metadata_hub.models.rdbms.table_info import Table
-from metadata_hub.models.rdbms.column_info import Column
+from connection.connection_abstract import RDBMSConnection
+from builders.rdbms.postgresql_builder import PostgresqlBuilder
+from models.server_instance.rdbms_instance import RDBMSInstance
+from models.rdbms.database_info import Database
+from models.rdbms.table_info import Table
+from models.rdbms.column_info import Column
 
 
 class RedshiftBuilder(PostgresqlBuilder):

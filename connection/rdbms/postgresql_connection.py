@@ -1,6 +1,6 @@
 # refer: https://kb.objectrocket.com/postgresql/postgres-list-tables-with-python-1023
 
-from metadata_hub.connection.connection_abstract import RDBMSConnection
+from connection.connection_abstract import RDBMSConnection
 import psycopg2
 
 

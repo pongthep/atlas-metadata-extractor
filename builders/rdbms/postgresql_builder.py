@@ -1,9 +1,9 @@
-from metadata_hub.connection.connection_abstract import RDBMSConnection
-from metadata_hub.builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
-from metadata_hub.models.server_instance.rdbms_instance import RDBMSInstance
-from metadata_hub.models.rdbms.database_info import Database
-from metadata_hub.models.rdbms.table_info import Table
-from metadata_hub.models.rdbms.column_info import Column
+from connection.connection_abstract import RDBMSConnection
+from builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
+from models.server_instance.rdbms_instance import RDBMSInstance
+from models.rdbms.database_info import Database
+from models.rdbms.table_info import Table
+from models.rdbms.column_info import Column
 
 
 class PostgresqlBuilder(RDBMSBuilder):

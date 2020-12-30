@@ -1,11 +1,11 @@
 from typing import List
-from metadata_hub.builders.rdbms.postgresql_builder import PostgresqlBuilder
-from metadata_hub.extractor.rdbms.postgresql_extractor import PostgreSQLExtractor
-from metadata_hub.connection.rdbms.postgresql_connection import PostgreSQLConnection
-from metadata_hub.models.server_instance.rdbms_instance import RDBMSInstance
-from metadata_hub.models.rdbms.database_info import Database
-from metadata_hub.models.rdbms.column_info import Column
-from metadata_hub.publisher.rdbms_publisher import RDBMSPublisher
+from builders.rdbms.postgresql_builder import PostgresqlBuilder
+from extractor.rdbms.postgresql_extractor import PostgreSQLExtractor
+from connection.rdbms.postgresql_connection import PostgreSQLConnection
+from models.server_instance.rdbms_instance import RDBMSInstance
+from models.rdbms.database_info import Database
+from models.rdbms.column_info import Column
+from publisher.rdbms_publisher import RDBMSPublisher
 
 if __name__ == "__main__":
     publisher = RDBMSPublisher()

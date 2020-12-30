@@ -1,4 +1,4 @@
-from metadata_hub.models.rdbms.table_info import Table
+from models.rdbms.table_info import Table
 
 
 class Column:

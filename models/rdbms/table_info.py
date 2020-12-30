@@ -1,4 +1,4 @@
-from metadata_hub.models.rdbms.database_info import Database
+from models.rdbms.database_info import Database
 
 
 class Table:

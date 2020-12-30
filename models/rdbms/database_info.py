@@ -1,4 +1,4 @@
-from metadata_hub.models.server_instance.rdbms_instance import RDBMSInstance
+from models.server_instance.rdbms_instance import RDBMSInstance
 
 
 class Database:

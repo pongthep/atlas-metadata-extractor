@@ -3,11 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# PyCharm
+.idea
+
 # C extensions
 *.so
 
-#file main.py only use for running local
-main.py
+#file reshift_extractor.py only use for running local
+scripts/
 
 # Distribution / packaging
 .Python

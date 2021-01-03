@@ -1,2 +1,2 @@
 # Apache Atlas Assistance
-Scripts to support using apache atlas
+Metadata extractor to support using apache atlas

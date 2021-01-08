@@ -1,6 +1,6 @@
 from builders.rdbms.rdbms_builder_abstract import RDBMSBuilderAbstract
 
 
-class PostgresqlBuilder(RDBMSBuilderAbstract):
-    def __init__(self, rdbms_type: str = 'postgresql'):
+class MysqlBuilder(RDBMSBuilderAbstract):
+    def __init__(self, rdbms_type: str = 'mariadb'):
         self.rdbms_type = rdbms_type

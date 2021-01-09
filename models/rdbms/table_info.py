@@ -1,12 +1,12 @@
-from models.rdbms.database_info import Database
+from models.rdbms.database_schema import DatabaseSchema
+from typing import List
 
 
 class Table:
-    def __init__(self, name: str = '', table_schema: str = '', db: Database = None, desc: str = '', tags: list = []):
+    def __init__(self, name: str = '', db_schema: DatabaseSchema = None, desc: str = '', tags: List[str] = []):
         self.name: str = name
-        self.table_schema: str = table_schema
-        self.db: Database = db
+        self.db_schema: DatabaseSchema = db_schema
         self.desc: str = desc
-        self.tags: list = tags
+        self.tags: List[str] = tags
 
-        self.qualified_name: str = '{schema}.{table}'.format(schema=table_schema, table=name)
+        self.qualified_name: str = '{schema}.{table}'.format(schema=db_schema.name, table=name)

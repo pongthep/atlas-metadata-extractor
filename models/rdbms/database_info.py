@@ -7,4 +7,4 @@ class Database:
         self.instance: RDBMSInstance = instance
         self.tags: list = tags
 
-        self.qualified_name: str = '{instance}_db={db}'.format(instance=instance.qualified_name, db=name)
+        self.qualified_name: str = '{instance}.{db}'.format(instance=instance.host, db=name)

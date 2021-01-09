@@ -1,13 +1,12 @@
-from connection.connection_abstract import RDBMSConnectionAbstract
+from connection.connection_abstract import RDBMSConnection
 import mysql.connector
 
 
-class MySQLConnection(RDBMSConnectionAbstract):
-    def __init__(self, host="", port=3306, db_name="", user="", password="", **kwargs: {}):
-        super(MySQLConnection, self).__init__()
-        self.__create_conn(host, port, db_name, user, password)
+class MysqlConnection(RDBMSConnection):
+    def __init__(self):
+        super(MysqlConnection, self).__init__()
 
-    def __create_conn(self, host="", port=3306, db_name="", user="", password=""):
+    def create_conn(self, host="", port=3306, db_name="", user="", password="", **kwargs: {}):
         self.host = host
         self.port = port
         self.db_name = db_name

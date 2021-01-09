@@ -1,15 +1,22 @@
 from abc import ABC, abstractmethod
 
 
-class RDBMSConnectionAbstract(ABC):
-    def __init__(self, conn=None, host: str = '', port: int = 5432, db_name: str = '', user: str = '',
-                 password: str = '', **kwargs: {}):
-        self.conn = conn
-        self.host = host
-        self.port = port
-        self.db_name = db_name
-        self.user = user
+class RDBMSConnection(ABC):
+    def __init__(self):
+        self.conn = None
+        self.host: str = ''
+        self.port: int = 1111
+        self.db_name: str = ''
+
+    @abstractmethod
+    def create_conn(self, host: str = '', port: int = 5432, db_name: str = '', user: str = '',
+                    password: str = '', **kwargs: {}):
+        pass
 
     @abstractmethod
     def get_conn(self):
+        pass
+
+    @abstractmethod
+    def close_connection(self):
         pass

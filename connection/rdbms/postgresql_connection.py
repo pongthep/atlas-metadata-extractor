@@ -1,15 +1,14 @@
 # refer: https://kb.objectrocket.com/postgresql/postgres-list-tables-with-python-1023
 
-from connection.connection_abstract import RDBMSConnectionAbstract
+from connection.connection_abstract import RDBMSConnection
 import psycopg2
 
 
-class PostgreSQLConnection(RDBMSConnectionAbstract):
-    def __init__(self, host="", port=5432, db_name="", user="", password="", **kwargs: {}):
-        super(PostgreSQLConnection, self).__init__()
-        self.__create_conn(host, port, db_name, user, password)
+class PostgresqlConnection(RDBMSConnection):
+    def __init__(self):
+        super(PostgresqlConnection, self).__init__()
 
-    def __create_conn(self, host="", port=5432, db_name="", user="", password=""):
+    def create_conn(self, host="", port=5432, db_name="", user="", password="", **kwargs: {}):
         self.host = host
         self.port = port
         self.db_name = db_name

@@ -1,25 +1,34 @@
 from abc import ABC, abstractmethod
-from connection.connection_abstract import RDBMSConnectionAbstract
+from connection.connection_abstract import RDBMSConnection
 from models.server_instance.rdbms_instance import RDBMSInstance
 from models.rdbms.database_info import Database
+from models.rdbms.database_schema import DatabaseSchema
 from models.rdbms.table_info import Table
 from models.rdbms.column_info import Column
 
 
-class RDBMSBuilderAbstract(ABC):
-    def build_instance(self, conn: RDBMSConnectionAbstract) -> RDBMSInstance:
+class RDBMSBuilder(ABC):
+    def __init__(self, rdbms_type: str = 'undefined '):
+        self.rdbms_type = rdbms_type
+
+    def build_instance(self, conn: RDBMSConnection = None) -> RDBMSInstance:
         return RDBMSInstance(host=conn.host,
                              port=conn.port,
                              rdbms_type=self.rdbms_type)
 
     @staticmethod
-    def build_database(name: str, instance: RDBMSInstance) -> Database:
+    def build_database(name: str = '', instance: RDBMSInstance = None) -> Database:
         return Database(name, instance)
 
     @staticmethod
-    def build_table(table_name: str = '', table_schema: str = 'public', db: Database = None) -> Table:
-        return Table(table_name, table_schema, db)
+    def build_database_schema(name: str = 'public', db: Database = None) -> DatabaseSchema:
+        return DatabaseSchema(name, db)
 
     @staticmethod
-    def build_column(table_name: str, datatype: str, length: int, table: Table) -> Column:
-        return Column(table_name, datatype, length, table)
+    def build_table(table_name: str = '', desc: str = '', db_schema: DatabaseSchema = None) -> Table:
+        return Table(name=table_name, db_schema=db_schema, desc=desc)
+
+    @staticmethod
+    def build_column(column_name: str = '', data_type: str = '', length: str = '', desc: str = '',
+                     table: Table = None) -> Column:
+        return Column(column_name, data_type, length, desc, table)

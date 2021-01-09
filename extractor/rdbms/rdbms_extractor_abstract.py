@@ -1,15 +1,21 @@
 from abc import ABC, abstractmethod
+from connection.connection_abstract import RDBMSConnection
+from builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
+from models.rdbms.database_schema import DatabaseSchema
+from models.rdbms.column_info import Column
+from typing import List, Dict
 
 
-class RDBMSExtractorAbstract(ABC):
+class RDBMSExtractor(ABC):
     @abstractmethod
-    def get_table_list(self, cursor: None, db_schema: str = ''):
+    def get_table_list(self, conn: RDBMSConnection = None, db_schema: str = ''):
         pass
 
     @abstractmethod
-    def extract_table(self, cursor: None, db_schema: str = '', table_name: str = ''):
+    def extract_db_schema(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
+                          db_schema: DatabaseSchema = None) -> Dict[str, List[Column]]:
         pass
 
     @abstractmethod
-    def extract_column(self, cursor: None, db_schema: str = '', table_name: str = ''):
+    def extract_column(self, conn: RDBMSConnection = None, db_schema: str = '', table_name: str = ''):
         pass

@@ -7,8 +7,9 @@ import time
 
 
 class RDBMSPublisher:
-    def __init__(self):
-        self.__publisher = AtlasPublisher()
+    def __init__(self, atlas: AtlasPublisher = AtlasPublisher()):
+        self.__publisher = atlas
+        self.__default_create_by = 'metadata-extractor'
 
     def publish_instance(self, instance: RDBMSInstance):
         instance_json = {
@@ -25,8 +26,8 @@ class RDBMSPublisher:
                     "port": str(instance.port)
                 },
                 "status": "ACTIVE",
-                "createdBy": "data_engineer",
-                "updatedBy": "data_engineer",
+                "createdBy": self.__default_create_by,
+                "updatedBy": self.__default_create_by,
                 "createTime": int(time.time()),
                 "updateTime": int(time.time()),
                 "relationshipAttributes": {
@@ -48,8 +49,8 @@ class RDBMSPublisher:
                     "name": db.name
                 },
                 "status": "ACTIVE",
-                "createdBy": "data_engineer",
-                "updatedBy": "data_engineer",
+                "createdBy": self.__default_create_by,
+                "updatedBy": self.__default_create_by,
                 "createTime": int(time.time()),
                 "updateTime": int(time.time()),
                 "relationshipAttributes": {
@@ -70,13 +71,13 @@ class RDBMSPublisher:
                 "attributes": {
                     "modifiedTime": int(time.time()),
                     "qualifiedName": table.qualified_name,
-                    "description": "",
+                    "description": table.desc,
                     "createTime": int(time.time()),
                     "name": table.name
                 },
                 "status": "ACTIVE",
-                "createdBy": "data_engineer",
-                "updatedBy": "data_engineer",
+                "createdBy": self.__default_create_by,
+                "updatedBy": self.__default_create_by,
                 "createTime": int(time.time()),
                 "updateTime": int(time.time()),
                 "relationshipAttributes": {
@@ -97,14 +98,14 @@ class RDBMSPublisher:
                 "attributes": {
                     "modifiedTime": int(time.time()),
                     "qualifiedName": column.qualified_name,
-                    "description": "",
+                    "description": column.desc,
                     "createTime": int(time.time()),
                     "name": column.name,
-                    "data_type": column.datatype
+                    "data_type": column.data_type
                 },
                 "status": "ACTIVE",
-                "createdBy": "data_engineer",
-                "updatedBy": "data_engineer",
+                "createdBy": self.__default_create_by,
+                "updatedBy": self.__default_create_by,
                 "createTime": int(time.time()),
                 "updateTime": int(time.time()),
                 "relationshipAttributes": {

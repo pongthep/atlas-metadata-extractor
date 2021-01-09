@@ -1,6 +1,6 @@
-from builders.rdbms.rdbms_builder_abstract import RDBMSBuilderAbstract
+from builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
 
 
-class MysqlBuilder(RDBMSBuilderAbstract):
+class MysqlBuilder(RDBMSBuilder):
     def __init__(self, rdbms_type: str = 'mariadb'):
         self.rdbms_type = rdbms_type

@@ -1,13 +1,15 @@
-from extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractorAbstract
-from extractor.rdbms.postgresql_extractor import PostgreSQLExtractor
+from extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
+from extractor.rdbms.postgresql_extractor import PostgresqlExtractor
+from extractor.rdbms.mysql_extractor import MysqlExtractor
 from models.enum.extractor_enum import RDBMSExtractorName
 
 
 class RDBMSExtractorFactory:
     @staticmethod
-    def create(name: str) -> RDBMSExtractorAbstract:
+    def create(name: str) -> RDBMSExtractor:
         switcher = {
-            RDBMSExtractorName.postgresql.name: PostgreSQLExtractor()
+            RDBMSExtractorName.postgresql.name: PostgresqlExtractor(),
+            RDBMSExtractorName.mysql.name: MysqlExtractor()
         }
 
         builder_obj = switcher.get(name, None)

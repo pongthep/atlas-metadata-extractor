@@ -7,8 +7,11 @@ import time
 
 
 class RDBMSPublisher:
-    def __init__(self, atlas: AtlasPublisher = AtlasPublisher()):
-        self.__publisher = atlas
+    def __init__(self, atlas_publisher: AtlasPublisher = None):
+        if not atlas_publisher:
+            self.__publisher = AtlasPublisher()
+        else:
+            self.__publisher = atlas_publisher
         self.__default_create_by = 'metadata-extractor'
 
     def publish_instance(self, instance: RDBMSInstance):
@@ -18,7 +21,6 @@ class RDBMSPublisher:
                 "attributes": {
                     "modifiedTime": int(time.time()),
                     "qualifiedName": instance.qualified_name,
-                    "description": "",
                     "createTime": int(time.time()),
                     "name": instance.host,
                     "rdbms_type": instance.rdbms_type,

@@ -16,7 +16,7 @@ from publisher.atlas.atlas_publisher import AtlasPublisher
 
 if __name__ == "__main__":
     atlas = AtlasPublisher(host='http://localhost:21000')
-    publisher = RDBMSPublisher(atlas=atlas)
+    publisher = RDBMSPublisher(atlas_publisher=atlas)
 
     conn: RDBMSConnection = RDBMSConnectionFactory.create(image_name=RDBMSConnectionName.postgresql.name,
                                                           host="localhost",
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     db: Database = builder.build_database(conn.db_name, instance)
     publisher.publish_database(instance_qualified_name=instance.qualified_name, db=db)
 
-    db_schema = builder.build_database_schema(name='local_dev', db=db)
+    db_schema = builder.build_database_schema(name='public', db=db)
     table_dict: Dict[str, List[Column]] = extractor.extract_db_schema(conn=conn, builder=builder, db_schema=db_schema)
 
     for table_name in table_dict:

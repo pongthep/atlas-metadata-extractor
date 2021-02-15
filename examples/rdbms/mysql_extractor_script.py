@@ -1,18 +1,18 @@
-from connection.connection_abstract import RDBMSConnection
-from models.server_instance.rdbms_instance import RDBMSInstance
-from models.rdbms.database_info import Database
-from publisher.atlas.rdbms_publisher import RDBMSPublisher
-from factories.connection_factory import RDBMSConnectionFactory
-from factories.extractor_factory import RDBMSExtractorFactory
-from factories.builder_factory import RDBMSBuilderFactory
-from models.enum.connection_enum import RDBMSConnectionName
-from models.enum.builder_enum import RDBMSBuilderName
-from models.enum.extractor_enum import RDBMSExtractorName
-from extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
-from builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
+from metadata_extractor.connection.connection_abstract import RDBMSConnection
+from metadata_extractor.models.server_instance.rdbms_instance import RDBMSInstance
+from metadata_extractor.models.rdbms.database_info import Database
+from metadata_extractor.publisher.atlas.rdbms_publisher import RDBMSPublisher
+from metadata_extractor.factories.connection_factory import RDBMSConnectionFactory
+from metadata_extractor.factories.extractor_factory import RDBMSExtractorFactory
+from metadata_extractor.factories.builder_factory import RDBMSBuilderFactory
+from metadata_extractor.models.enum.connection_enum import RDBMSConnectionName
+from metadata_extractor.models.enum.builder_enum import RDBMSBuilderName
+from metadata_extractor.models.enum.extractor_enum import RDBMSExtractorName
+from metadata_extractor.extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
+from metadata_extractor.builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
 from typing import List, Dict
-from models.rdbms.column_info import Column
-from publisher.atlas.atlas_publisher import AtlasPublisher
+from metadata_extractor.models.rdbms.column_info import Column
+from metadata_extractor.publisher.atlas.atlas_publisher import AtlasPublisher
 
 if __name__ == "__main__":
     atlas = AtlasPublisher(host='http://localhost:21000')

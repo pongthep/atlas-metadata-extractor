@@ -1,6 +1,6 @@
 import enum
 
 
-class RDBMSConnectionName(enum.Enum):
+class DBEngine(enum.Enum):
     postgresql = "postgresql"
     mysql = "mysql"

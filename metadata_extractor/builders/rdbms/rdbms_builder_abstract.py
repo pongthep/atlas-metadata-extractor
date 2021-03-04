@@ -1,10 +1,10 @@
 from abc import ABC
 from metadata_extractor.connection.connection_abstract import RDBMSConnection
-from metadata_extractor.models.server_instance.rdbms_instance import RDBMSInstance
-from metadata_extractor.models.rdbms.database_info import Database
-from metadata_extractor.models.rdbms.database_schema import DatabaseSchema
-from metadata_extractor.models.rdbms.table_info import Table
-from metadata_extractor.models.rdbms.column_info import Column
+from metadata_extractor.models.atlas_model.rdbms.rdbms_instance import RDBMSInstance
+from metadata_extractor.models.atlas_model.rdbms.database_info import Database
+from metadata_extractor.models.atlas_model.rdbms.database_schema import DatabaseSchema
+from metadata_extractor.models.atlas_model.rdbms.table_info import Table
+from metadata_extractor.models.atlas_model.rdbms.column_info import Column
 
 
 class RDBMSBuilder(ABC):

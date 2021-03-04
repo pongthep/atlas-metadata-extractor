@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from metadata_extractor.connection.connection_abstract import RDBMSConnection
 from metadata_extractor.builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
-from metadata_extractor.models.rdbms.database_schema import DatabaseSchema
-from metadata_extractor.models.rdbms.column_info import Column
+from metadata_extractor.models.atlas_model.rdbms.database_schema import DatabaseSchema
+from metadata_extractor.models.atlas_model.rdbms.column_info import Column
 from typing import List, Dict
 
 

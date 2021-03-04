@@ -1,7 +1,7 @@
 from metadata_extractor.connection.rdbms.postgresql_connection import PostgresqlConnection
 from metadata_extractor.connection.rdbms.mysql_connection import MysqlConnection
 from metadata_extractor.connection.connection_abstract import RDBMSConnection
-from metadata_extractor.models.enum.connection_enum import RDBMSConnectionName
+from metadata_extractor.models.enum.db_engine_enum import DBEngine
 
 
 class RDBMSConnectionFactory:
@@ -9,8 +9,8 @@ class RDBMSConnectionFactory:
     def create(image_name: str, host: str = '', port: int = 1111, db_name: str = '', user: str = '',
                password: str = '', **kwargs: {}) -> RDBMSConnection:
         switcher = {
-            RDBMSConnectionName.postgresql.name: PostgresqlConnection(),
-            RDBMSConnectionName.mysql.name: MysqlConnection()
+            DBEngine.postgresql.name: PostgresqlConnection(),
+            DBEngine.mysql.name: MysqlConnection()
         }
 
         builder_obj = switcher.get(image_name, None)

@@ -3,7 +3,7 @@ from metadata_extractor.connection.connection_abstract import RDBMSConnection
 from metadata_extractor.builders.rdbms.rdbms_builder_abstract import RDBMSBuilder
 from metadata_extractor.models.atlas_model.rdbms.database_schema import DatabaseSchema
 from metadata_extractor.models.atlas_model.rdbms.column_info import Column
-from typing import List, Dict
+from typing import List, Dict, Set
 
 
 class RDBMSExtractor(ABC):
@@ -18,4 +18,14 @@ class RDBMSExtractor(ABC):
 
     @abstractmethod
     def extract_column(self, conn: RDBMSConnection = None, db_schema: str = '', table_name: str = ''):
+        pass
+
+    @abstractmethod
+    def extract_table_pk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
+                         db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
+        pass
+
+    @abstractmethod
+    def extract_table_fk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
+                         db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
         pass

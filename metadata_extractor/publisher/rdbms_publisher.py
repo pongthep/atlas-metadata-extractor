@@ -1,19 +1,19 @@
 from metadata_extractor.models.atlas_model.rdbms.rdbms_instance import RDBMSInstance
 from metadata_extractor.models.atlas_model.rdbms.database_info import Database
-from metadata_extractor.models.atlas_model.rdbms.table_info import Table
+from metadata_extractor.models.atlas_model.rdbms.table_info import Table, TableForeignKey
 from metadata_extractor.models.atlas_model.rdbms.column_info import Column
-from metadata_extractor.services.atlas_service import AtlasService
+from metadata_extractor.publisher.atlas_publisher import AtlasPublisher
 import time
 from metadata_extractor.models.atlas_model.rdbms.database_info import get_qualified_name as db_get_qualified_name
 from metadata_extractor.models.atlas_model.rdbms.database_info import get_delimiter as db_get_delimiter
 
 
-class RDBMSService:
-    def __init__(self, atlas_service: AtlasService = None):
-        if not atlas_service:
-            self.__atlas = AtlasService()
+class RDBMSPublisher:
+    def __init__(self, atlas_publisher: AtlasPublisher = None):
+        if not atlas_publisher:
+            self.__atlas = AtlasPublisher()
         else:
-            self.__atlas = atlas_service
+            self.__atlas = atlas_publisher
         self.__default_create_by = 'metadata-extractor'
 
     def publish_instance(self, instance: RDBMSInstance, db_name: str):
@@ -105,7 +105,8 @@ class RDBMSService:
                     "description": column.desc,
                     "createTime": int(time.time()),
                     "name": column.name,
-                    "data_type": column.data_type
+                    "data_type": column.data_type,
+                    "isPrimaryKey": column.is_pk
                 },
                 "status": "ACTIVE",
                 "createdBy": self.__default_create_by,
@@ -122,6 +123,42 @@ class RDBMSService:
         }
 
         self.__atlas.publish_entity(column_json)
+
+    def publish_table_foreign_key(self, table_fk: TableForeignKey):
+        table_fk_json = {
+            "entity": {
+                "typeName": "rdbms_foreign_key",
+                "attributes": {
+                    "name": "{column_base_qn}_foreign_key".format(column_base_qn=table_fk.column_base_qn),
+                    "qualifiedName": table_fk.qualified_name,
+                },
+                "status": "ACTIVE",
+                "createdBy": self.__default_create_by,
+                "updatedBy": self.__default_create_by,
+                "createTime": int(time.time()),
+                "updateTime": int(time.time()),
+                "relationshipAttributes": {
+                    "table": {
+                        "uniqueAttributes": {"qualifiedName": table_fk.table_base_qn},
+                        "typeName": "rdbms_table"
+                    },
+                    "key_columns": [{
+                        "uniqueAttributes": {"qualifiedName": table_fk.column_base_qn},
+                        "typeName": "rdbms_column"
+                    }],
+                    "references_table": {
+                        "uniqueAttributes": {"qualifiedName": table_fk.table_refer_qn},
+                        "typeName": "rdbms_table"
+                    },
+                    "references_columns": [{
+                        "uniqueAttributes": {"qualifiedName": table_fk.column_refer_qn},
+                        "typeName": "rdbms_column"
+                    }],
+                }
+            }
+        }
+
+        self.__atlas.publish_entity(table_fk_json)
 
     def get_table_meta_data_missing(self, host_name: str = None
                                     , database_name: str = None):

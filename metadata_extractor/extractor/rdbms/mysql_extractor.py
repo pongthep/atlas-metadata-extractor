@@ -6,7 +6,7 @@ from metadata_extractor.extractor.rdbms.rdbms_extractor_abstract import RDBMSExt
 from metadata_extractor.models.atlas_model.rdbms.database_schema import DatabaseSchema
 from metadata_extractor.models.atlas_model.rdbms.table_info import Table
 from metadata_extractor.models.atlas_model.rdbms.column_info import Column
-from typing import List, Dict
+from typing import List, Dict, Set
 
 
 class MysqlExtractor(RDBMSExtractor):
@@ -72,3 +72,12 @@ class MysqlExtractor(RDBMSExtractor):
             table_list.append(table_name[0])
 
         return table_list
+
+    def extract_table_fk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
+                         db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
+        pass
+
+    def extract_table_pk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
+                         db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
+        pass
+

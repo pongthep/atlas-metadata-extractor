@@ -5,14 +5,14 @@ from metadata_extractor.models.hosts.rdbms_host import RDBMSHost
 from metadata_extractor.models.enum.db_engine_enum import DBEngine
 
 if __name__ == "__main__":
-    host = '192.168.1.131'
-    port = 55001
-    db_name = 'postgres'
-    db_schema = 'public'
-    db_user = 'postgres'
-    db_password = 'q1w2e3r4'
+    host = ''
+    port = 5432
+    db_name = ''
+    db_schema = ''
+    db_user = ''
+    db_password = ''
 
-    atlas = AtlasPublisher(host='http://192.168.1.131:21000', password='admin')
+    atlas = AtlasPublisher(host='http://localhost:21000', password='')
     rdbms_publisher = RDBMSPublisher(atlas_publisher=atlas)
 
     rdbms_host = RDBMSHost(host=host, port=port, db_name=db_name, db_schema=db_schema, db_user=db_user,

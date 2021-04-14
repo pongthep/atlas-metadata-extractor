@@ -150,7 +150,7 @@ class PostgresqlExtractor(RDBMSExtractor):
                 for row in rows:
                     table_name = row[0]
                     column_name = row[1]
-                    print(column_name)
+
                     column_pk_set = pk_map.get(table_name, set())
                     column_pk_set.add(column_name)
                     pk_map.update({table_name: column_pk_set})

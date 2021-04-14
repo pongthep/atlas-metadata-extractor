@@ -18,17 +18,17 @@ class RDBMSBuilder(ABC):
 
     @staticmethod
     def build_database(name: str = '', instance: RDBMSInstance = None) -> Database:
-        return Database(name, instance)
+        return Database(name=name, instance=instance)
 
     @staticmethod
     def build_database_schema(name: str = 'public', db: Database = None) -> DatabaseSchema:
-        return DatabaseSchema(name, db)
+        return DatabaseSchema(name=name, db=db)
 
     @staticmethod
     def build_table(table_name: str = '', desc: str = '', db_schema: DatabaseSchema = None) -> Table:
         return Table(name=table_name, db_schema=db_schema, desc=desc)
 
     @staticmethod
-    def build_column(column_name: str = '', data_type: str = '', length: str = '', desc: str = '',
+    def build_column(column_name: str = '', data_type: str = '', length: str = '', desc: str = '', is_pk: bool = False,
                      table: Table = None) -> Column:
-        return Column(column_name, data_type, length, desc, table)
+        return Column(name=column_name, data_type=data_type, length=length, desc=desc, is_pk=is_pk, table=table)

@@ -2,7 +2,7 @@ import requests
 import time
 
 
-class AtlasService:
+class AtlasPublisher:
     def __init__(self, host: str = 'http://localhost:21000', user: str = 'admin', password: str = 'admin'):
         # TODO Change to env var
         self.host: str = host

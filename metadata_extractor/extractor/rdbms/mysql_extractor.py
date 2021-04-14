@@ -4,7 +4,7 @@ from metadata_extractor.builders.rdbms.rdbms_builder_abstract import RDBMSBuilde
 from metadata_extractor.connection.connection_abstract import RDBMSConnection
 from metadata_extractor.extractor.rdbms.rdbms_extractor_abstract import RDBMSExtractor
 from metadata_extractor.models.atlas_model.rdbms.database_schema import DatabaseSchema
-from metadata_extractor.models.atlas_model.rdbms.table_info import Table
+from metadata_extractor.models.atlas_model.rdbms.table_info import Table, TableForeignKey
 from metadata_extractor.models.atlas_model.rdbms.column_info import Column
 from typing import List, Dict, Set
 
@@ -15,6 +15,7 @@ class MysqlExtractor(RDBMSExtractor):
         fetch_size: int = 50
         table_map: Dict[str, Table] = {}
         column_map: Dict[str, List[Column]] = {}
+        pk_map: Dict[str, Set[str]] = self.extract_table_pk(conn=conn, builder=builder, db_schema=db_schema)
         with conn.get_conn().cursor() as cursor:
             sql = "SELECT lower(c.table_schema) AS \"schema\", " \
                   "lower(c.table_name) AS name, " \
@@ -46,8 +47,10 @@ class MysqlExtractor(RDBMSExtractor):
                                                                          db_schema=db_schema))
                     table_map.update({table_name: table_obj})
 
+                    is_col_pk = col_name in pk_map.get(table_name, {})
+
                     col_obj: Column = builder.build_column(column_name=col_name, data_type=col_type, desc=col_desc,
-                                                           table=table_obj)
+                                                           is_pk=is_col_pk, table=table_obj)
                     column_list = column_map.get(table_name, [])
                     column_list.append(col_obj)
                     column_map.update({table_name: column_list})
@@ -75,9 +78,64 @@ class MysqlExtractor(RDBMSExtractor):
 
     def extract_table_fk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
                          db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
-        pass
+        fetch_size: int = 50
+        table_fk_map: Dict[str, List[TableForeignKey]] = {}
+        with conn.get_conn().cursor() as cursor:
+            sql = "SELECT TABLE_NAME, " \
+                  "COLUMN_NAME, " \
+                  "REFERENCED_TABLE_SCHEMA, " \
+                  "REFERENCED_TABLE_NAME, " \
+                  "REFERENCED_COLUMN_NAME " \
+                  "FROM " \
+                  "INFORMATION_SCHEMA.KEY_COLUMN_USAGE " \
+                  "WHERE " \
+                  " REFERENCED_TABLE_SCHEMA = '{db_name}';".format(db_name=db_schema.db.name)
+            cursor.execute(sql)
+            rows = cursor.fetchmany(fetch_size)
+
+            while rows is not None and len(rows) > 0:
+                for row in rows:
+                    base_table_name = row[0]
+                    base_column_name = row[1]
+                    refer_table_schema = row[2]
+                    refer_table_name = row[3]
+                    refer_column_name = row[4]
+
+                    fk_list = table_fk_map.get(base_table_name, [])
+                    table_fk = TableForeignKey(db_schema_base=db_schema, table_base=base_table_name
+                                               , column_base=base_column_name
+                                               , schema_refer=refer_table_schema
+                                               , table_refer=refer_table_name
+                                               , column_refer=refer_column_name)
+
+                    fk_list.append(table_fk)
+                    table_fk_map.update({base_table_name: fk_list})
+                rows = cursor.fetchmany(fetch_size)
+
+        return table_fk_map
 
     def extract_table_pk(self, conn: RDBMSConnection = None, builder: RDBMSBuilder = None,
                          db_schema: DatabaseSchema = None) -> Dict[str, Set[str]]:
-        pass
+        fetch_size: int = 50
+        pk_map: Dict[str, Set[str]] = {}
+        with conn.get_conn().cursor() as cursor:
+            sql = "SELECT t.table_name,k.column_name " \
+                  "FROM information_schema.table_constraints t  " \
+                  "JOIN information_schema.key_column_usage k  " \
+                  "USING(constraint_name,table_schema,table_name)  " \
+                  "WHERE t.constraint_type='PRIMARY KEY'  " \
+                  "AND t.table_schema='{db_name}';".format(db_name=db_schema.db.name)
+            cursor.execute(sql)
+            rows = cursor.fetchmany(fetch_size)
 
+            while rows is not None and len(rows) > 0:
+                for row in rows:
+                    table_name = row[0]
+                    column_name = row[1]
+
+                    column_pk_set = pk_map.get(table_name, set())
+                    column_pk_set.add(column_name)
+                    pk_map.update({table_name: column_pk_set})
+                rows = cursor.fetchmany(fetch_size)
+
+        return pk_map
